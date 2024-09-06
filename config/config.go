@@ -8,6 +8,7 @@ import (
 type GotchaConfig struct {
 	App AppConfig
 	Api ApiConfig
+	DB  DBConfig
 }
 
 func Get() *GotchaConfig {
@@ -28,5 +29,6 @@ func init() {
 	Config = &GotchaConfig{
 		App: CreateAppConfig(),
 		Api: CreateAPIConfig(),
+		DB:  CreateDBConfig(),
 	}
 }
