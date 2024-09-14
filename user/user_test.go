@@ -1,6 +1,7 @@
 package user
 
 import (
+	"errors"
 	"github.com/DATA-DOG/go-sqlmock"
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
@@ -24,13 +25,13 @@ func TestCreateNewUser(t *testing.T) {
 		user model.User
 	}{
 		{
-			name: "Create a user that does not exist",
+			name: "should create a user that does not exist",
 			args: args{
 				username: "waki",
 				name:     "wiaan",
 				password: "password1",
 				email:    "info@example.com",
-				role:     "user",
+				role:     "USER",
 			},
 			err: nil,
 			user: model.User{
@@ -38,11 +39,41 @@ func TestCreateNewUser(t *testing.T) {
 				Name:     "wiaan",
 				Password: "password1",
 				Email:    "info@example.com",
-				Role:     "user",
+				Role:     "USER",
+			},
+		},
+		{
+			name: "should fail to create a user with missing username",
+			args: args{
+				username: "",
+				name:     "wiaan",
+				password: "password1",
+				email:    "info@example.com",
+				role:     "USER",
+			},
+			err:  errors.New("required fields are missing. big mistake, buddy"),
+			user: model.User{},
+		},
+		{
+			name: "should fill in the default role if it is not provided",
+			args: args{
+				username: "waki",
+				name:     "wiaan",
+				password: "password1",
+				email:    "info@example.com",
+				role:     "",
+			},
+			err: nil,
+			user: model.User{
+				Username: "waki",
+				Name:     "wiaan",
+				Password: "password1",
+				Email:    "info@example.com",
+				Role:     "USER",
 			},
 		},
 	}
-	// Mock DB for tests
+	// mock DB for tests
 	mockDb, _, _ := sqlmock.New()
 	translator := postgres.New(postgres.Config{
 		Conn:       mockDb,
