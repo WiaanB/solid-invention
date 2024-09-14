@@ -1,14 +1,10 @@
 services:
-  surrealdb:
-    env_file:
-      - .env
-    entrypoint:
-      - /surreal
-      - start
-      - --user
-      - $GOTCHA_DB_USER
-      - --pass
-      - $GOTCHA_DB_PASS
-    image: surrealdb/surrealdb:latest
+  db:
+    container_name: gotcha_db
+    image: postgres
+    environment:
+      POSTGRES_USER: ${GOTCHA_DB_USER}
+      POSTGRES_PASSWORD: ${GOTCHA_DB_PASS}
+      POSTGRES_DB: ${GOTCHA_DB_DATABASE}
     ports:
-      - "8000:8000"
+      - "5432:5432"
