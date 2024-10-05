@@ -1,9 +1,9 @@
 package cmd
 
 import (
+	"cinnanym/database/postgres"
+	"cinnanym/server"
 	"github.com/spf13/cobra"
-	"gotcha/database/postgres"
-	"gotcha/server"
 )
 
 func init() {
@@ -12,7 +12,7 @@ func init() {
 
 var serveCmd = &cobra.Command{
 	Use:   "serve",
-	Short: "Serves the Gotcha Web Server",
+	Short: "Serves the Web Server",
 	Run: func(cmd *cobra.Command, args []string) {
 		postgres.InitialiseDB()
 		server.Serve()

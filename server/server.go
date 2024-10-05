@@ -1,10 +1,10 @@
 package server
 
 import (
+	"cinnanym/config"
 	"encoding/json"
 	"fmt"
 	"github.com/gin-gonic/gin"
-	"gotcha/config"
 )
 
 func Serve() {

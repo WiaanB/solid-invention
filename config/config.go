@@ -5,17 +5,17 @@ import (
 	"log"
 )
 
-type GotchaConfig struct {
+type CinnanymConfig struct {
 	App AppConfig
 	Api ApiConfig
 	DB  DBConfig
 }
 
-func Get() *GotchaConfig {
+func Get() *CinnanymConfig {
 	return Config
 }
 
-var Config *GotchaConfig
+var Config *CinnanymConfig
 
 func init() {
 	// read the .env file
@@ -26,7 +26,7 @@ func init() {
 		log.Printf("Error reading config file, %s", err)
 	}
 
-	Config = &GotchaConfig{
+	Config = &CinnanymConfig{
 		App: CreateAppConfig(),
 		Api: CreateAPIConfig(),
 		DB:  CreateDBConfig(),

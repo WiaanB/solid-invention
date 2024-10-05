@@ -1,7 +1,7 @@
 package main
 
 import (
-	"gotcha/cmd"
+	"cinnanym/cmd"
 )
 
 func main() {

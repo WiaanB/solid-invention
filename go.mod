@@ -1,4 +1,4 @@
-module gotcha
+module cinnanym
 
 go 1.23.0
 

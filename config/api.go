@@ -7,11 +7,11 @@ type ApiConfig struct {
 }
 
 func init() {
-	viper.SetDefault("GOTCHA_API_PORT", 8080)
+	viper.SetDefault("SERVER_API_PORT", 8080)
 }
 
 func CreateAPIConfig() ApiConfig {
 	return ApiConfig{
-		Port: viper.GetInt("GOTCHA_API_PORT"),
+		Port: viper.GetInt("SERVER_API_PORT"),
 	}
 }

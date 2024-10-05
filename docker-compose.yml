@@ -7,9 +7,9 @@ services:
       - /surreal
       - start
       - --user
-      - $GOTCHA_DB_USER
+      - $DB_USER
       - --pass
-      - $GOTCHA_DB_PASS
+      - $DB_PASS
     image: surrealdb/surrealdb:latest
     ports:
       - 8000:8000

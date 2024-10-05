@@ -9,11 +9,11 @@ type AppConfig struct {
 }
 
 func init() {
-	viper.SetDefault("GOTCHA_ENV", "dev")
+	viper.SetDefault("ENVIRONMENT", "dev")
 }
 
 func CreateAppConfig() AppConfig {
-	env := viper.GetString("GOTCHA_ENV")
+	env := viper.GetString("ENVIRONMENT")
 
 	if env != "dev" && env != "prod" {
 		env = "prod"

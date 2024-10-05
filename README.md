@@ -1,5 +1,5 @@
-# Gotcha
-Don't be stupid, dummy
+# cinnanym
+placeholder stuff
 
 ## Environment
 Run the following to create a `.env` template:

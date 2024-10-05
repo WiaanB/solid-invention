@@ -1,8 +1,8 @@
 package user
 
 import (
+	"cinnanym/model"
 	"errors"
-	"gotcha/model"
 )
 
 func CreateNewUser(username, name, password, email, role string) (error, model.User) {
