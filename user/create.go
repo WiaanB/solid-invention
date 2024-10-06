@@ -14,7 +14,7 @@ func Create(username, name, password, email, role string) (model.User, error) {
 
 	// default role
 	if role == "" {
-		role = "USER"
+		role = "user"
 	}
 
 	newUser := model.User{

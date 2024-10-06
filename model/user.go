@@ -24,9 +24,6 @@ func (u *User) UpdateValues(newValues User) {
 	if newValues.Name != "" {
 		u.Name = newValues.Name
 	}
-	if newValues.Password != "" {
-		u.Password = newValues.Password
-	}
 	if newValues.Email != "" {
 		u.Email = newValues.Email
 	}
