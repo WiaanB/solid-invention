@@ -34,3 +34,12 @@ func (u *User) UpdateValues(newValues User) {
 		u.Role = newValues.Role
 	}
 }
+
+func (u *User) ToJson() map[string]interface{} {
+	return map[string]interface{}{
+		"username": u.Username,
+		"name":     u.Name,
+		"email":    u.Email,
+		"role":     u.Role,
+	}
+}

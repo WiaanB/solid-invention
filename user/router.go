@@ -9,6 +9,20 @@ import (
 func Router(r *gin.Engine) {
 	usrRouter := r.Group("/user")
 	{
+		usrRouter.GET("/find/:id", func(c *gin.Context) {
+			id := c.Param("id")
+			user, err := surreal.FindOne[model.User](id)
+			if err != nil {
+				c.JSON(400, gin.H{
+					"error": err.Error(),
+				})
+				return
+			}
+
+			c.JSON(200, gin.H{
+				"user": user,
+			})
+		})
 		usrRouter.POST("/create", func(c *gin.Context) {
 			var user model.User
 			err := c.BindJSON(&user)
@@ -19,7 +33,7 @@ func Router(r *gin.Engine) {
 				return
 			}
 
-			newUser, err := Create(surreal.DB, user.Username, user.Name, user.Password, user.Email, user.Role)
+			newUser, err := Create(user.Username, user.Name, user.Password, user.Email, user.Role)
 			if err != nil {
 				c.JSON(400, gin.H{
 					"error": err.Error(),

@@ -1,20 +1,15 @@
 package user
 
 import (
+	"cinnanym/database/surreal"
 	"cinnanym/model"
 	"errors"
-	"github.com/surrealdb/surrealdb.go"
 )
 
-func Create(DB *surrealdb.DB, username, name, password, email, role string) (model.User, error) {
+func Create(username, name, password, email, role string) (model.User, error) {
 	// ensure the required fields are there
 	if username == "" || password == "" || email == "" {
 		return model.User{}, errors.New("required fields are missing, try again")
-	}
-
-	_, err := FindUser(DB, email)
-	if err == nil {
-		return model.User{}, errors.New("user already exists")
 	}
 
 	// default role
@@ -30,7 +25,11 @@ func Create(DB *surrealdb.DB, username, name, password, email, role string) (mod
 		Role:     role,
 	}
 
-	err = CreateUser(DB, newUser)
+	err := surreal.Create(surreal.CreatePayload{
+		Table:      "user",
+		Identifier: "",
+		Data:       newUser.ToJson(),
+	})
 	if err != nil {
 		return model.User{}, err
 	}
