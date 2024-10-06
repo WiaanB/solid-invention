@@ -2,6 +2,7 @@ package server
 
 import (
 	"cinnanym/config"
+	"cinnanym/user"
 	"encoding/json"
 	"fmt"
 	"github.com/gin-gonic/gin"
@@ -9,6 +10,9 @@ import (
 
 func Serve() {
 	r := gin.Default()
+
+	// register routes
+	user.Router(r)
 
 	r.GET("/ping", func(c *gin.Context) {
 		c.JSON(200, gin.H{

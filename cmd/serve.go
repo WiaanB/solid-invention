@@ -1,7 +1,7 @@
 package cmd
 
 import (
-	"cinnanym/database/postgres"
+	"cinnanym/database/surreal"
 	"cinnanym/server"
 	"github.com/spf13/cobra"
 )
@@ -14,7 +14,7 @@ var serveCmd = &cobra.Command{
 	Use:   "serve",
 	Short: "Serves the Web Server",
 	Run: func(cmd *cobra.Command, args []string) {
-		postgres.InitialiseDB()
+		surreal.SetupDB()
 		server.Serve()
 	},
 }

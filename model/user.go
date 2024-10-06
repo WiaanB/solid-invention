@@ -1,14 +1,16 @@
 package model
 
-import "gorm.io/gorm"
+import (
+	"github.com/surrealdb/surrealdb.go"
+)
 
 type User struct {
-	gorm.Model
-	Username string `gorm:"not null" json:"username,omitempty"`
-	Name     string `json:"name,omitempty"`
-	Password string `gorm:"not null" json:"password,omitempty"`
-	Email    string `gorm:"unique,not null" json:"email,omitempty"`
-	Role     string `gorm:"default:'user'" json:"role,omitempty"`
+	surrealdb.Basemodel `table:"user"`
+	Username            string `json:"username,omitempty"`
+	Name                string `json:"name,omitempty"`
+	Password            string `json:"password,omitempty"`
+	Email               string `json:"email,omitempty"`
+	Role                string `json:"role,omitempty"`
 }
 
 func (u *User) IsAdmin() bool {

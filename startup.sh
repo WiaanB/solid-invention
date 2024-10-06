@@ -3,6 +3,7 @@ source .env
 
 # Start the Docker Container and the DB's script
 docker compose up -d > /dev/null
+sleep 5
 
 echo "docker started, setting up the DB..."
 docker cp ./setup.surql surrealdb:/home > /dev/null
