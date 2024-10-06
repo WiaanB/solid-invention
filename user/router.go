@@ -47,5 +47,28 @@ func Router(r *gin.Engine) {
 				"user": newUser,
 			})
 		})
+		usrRouter.PUT("/update/:id", func(c *gin.Context) {
+			id := c.Param("id")
+			var user model.User
+			err := c.BindJSON(&user)
+			if err != nil {
+				c.JSON(400, gin.H{
+					"error": "failed to bind user",
+				})
+				return
+			}
+
+			updatedUser, err := Update(id, user)
+			if err != nil {
+				c.JSON(400, gin.H{
+					"error": err.Error(),
+				})
+				return
+			}
+
+			c.JSON(200, gin.H{
+				"user": updatedUser,
+			})
+		})
 	}
 }
