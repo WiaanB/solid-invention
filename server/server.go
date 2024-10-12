@@ -40,5 +40,8 @@ func Serve() {
 		}
 	})
 
-	r.Run(fmt.Sprintf(":%d", config.Get().Api.Port))
+	err := r.Run(fmt.Sprintf(":%d", config.Get().Api.Port))
+	if err != nil {
+		return
+	}
 }
