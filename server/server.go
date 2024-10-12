@@ -2,6 +2,7 @@ package server
 
 import (
 	"cinnanym/config"
+	"cinnanym/restaurant"
 	"cinnanym/user"
 	"encoding/json"
 	"fmt"
@@ -13,6 +14,7 @@ func Serve() {
 
 	// register routes
 	user.Router(r)
+	restaurant.Router(r)
 
 	r.GET("/ping", func(c *gin.Context) {
 		c.JSON(200, gin.H{

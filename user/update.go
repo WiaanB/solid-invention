@@ -5,7 +5,6 @@ import (
 	"cinnanym/maps"
 	"cinnanym/model"
 	"errors"
-	"fmt"
 )
 
 func Update(id string, user model.User) (maps.Map, error) {
@@ -14,9 +13,6 @@ func Update(id string, user model.User) (maps.Map, error) {
 	if err != nil {
 		return nil, errors.New("that id does not exist")
 	}
-
-	fmt.Println("Updating", id, user)
-	fmt.Println("Existing", existingUser)
 
 	existingUser.Merge(user.ToMap())
 

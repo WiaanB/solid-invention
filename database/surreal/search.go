@@ -40,8 +40,6 @@ func FindAll(payload FindAllPayload) (map[string]interface{}, error) {
 		return nil, err
 	}
 
-	fmt.Println(string(jsonData))
-
 	var result []map[string]interface{}
 	err = json.Unmarshal(jsonData, &result)
 	if err != nil {
