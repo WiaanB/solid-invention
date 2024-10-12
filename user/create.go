@@ -28,7 +28,7 @@ func Create(username, name, password, email, role string) (model.User, error) {
 	err := surreal.Create(surreal.CreatePayload{
 		Table:      "user",
 		Identifier: "",
-		Data:       newUser.ToJson(),
+		Data:       newUser.ToMap(),
 	})
 	if err != nil {
 		return model.User{}, err

@@ -4,15 +4,35 @@ import (
 	"cinnanym/database/surreal"
 	"cinnanym/model"
 	"github.com/gin-gonic/gin"
+	"strconv"
 )
 
 func Router(r *gin.Engine) {
 	usrRouter := r.Group("/user")
 	{
-		// Get by ID
-		usrRouter.GET("/find/:id", func(c *gin.Context) {
-			id := c.Param("id")
-			user, err := surreal.FindOne[model.User](id)
+		// Get all Users
+		usrRouter.GET("/all", func(c *gin.Context) {
+			var size int
+			var page int
+			sizeParam := c.Query("size")
+			pageParam := c.Query("page")
+
+			var err error
+			size, err = strconv.Atoi(sizeParam)
+			if err != nil {
+				size = 10
+			}
+
+			page, err = strconv.Atoi(pageParam)
+			if err != nil {
+				page = 0
+			}
+
+			resp, err := surreal.FindAll(surreal.FindAllPayload{
+				Table: "user",
+				Size:  size,
+				Page:  page,
+			})
 			if err != nil {
 				c.JSON(400, gin.H{
 					"error": err.Error(),
@@ -20,9 +40,20 @@ func Router(r *gin.Engine) {
 				return
 			}
 
-			c.JSON(200, gin.H{
-				"user": user,
-			})
+			c.JSON(200, resp["result"])
+		})
+		// Get by ID
+		usrRouter.GET("/:id", func(c *gin.Context) {
+			id := c.Param("id")
+			user, err := surreal.FindOne(id)
+			if err != nil {
+				c.JSON(400, gin.H{
+					"error": err.Error(),
+				})
+				return
+			}
+
+			c.JSON(200, user)
 		})
 		// Create new user
 		usrRouter.POST("/create", func(c *gin.Context) {
@@ -43,11 +74,10 @@ func Router(r *gin.Engine) {
 				return
 			}
 
-			c.JSON(200, gin.H{
-				"user": newUser,
-			})
+			c.JSON(200, newUser)
 		})
-		usrRouter.PUT("/update/:id", func(c *gin.Context) {
+		// Update user
+		usrRouter.PUT("/:id", func(c *gin.Context) {
 			id := c.Param("id")
 			var user model.User
 			err := c.BindJSON(&user)
@@ -66,8 +96,21 @@ func Router(r *gin.Engine) {
 				return
 			}
 
+			c.JSON(200, updatedUser)
+		})
+		// Delete user
+		usrRouter.DELETE("/:id", func(c *gin.Context) {
+			id := c.Param("id")
+			err := Delete(id)
+			if err != nil {
+				c.JSON(400, gin.H{
+					"error": err.Error(),
+				})
+				return
+			}
+
 			c.JSON(200, gin.H{
-				"user": updatedUser,
+				"message": "user deleted",
 			})
 		})
 	}

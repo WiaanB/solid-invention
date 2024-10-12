@@ -1,6 +1,7 @@
 package model
 
 import (
+	"cinnanym/maps"
 	"github.com/surrealdb/surrealdb.go"
 )
 
@@ -17,22 +18,7 @@ func (u *User) IsAdmin() bool {
 	return u.Role == "admin"
 }
 
-func (u *User) UpdateValues(newValues User) {
-	if newValues.Username != "" {
-		u.Username = newValues.Username
-	}
-	if newValues.Name != "" {
-		u.Name = newValues.Name
-	}
-	if newValues.Email != "" {
-		u.Email = newValues.Email
-	}
-	if newValues.Role != "" {
-		u.Role = newValues.Role
-	}
-}
-
-func (u *User) ToJson() map[string]interface{} {
+func (u *User) ToMap() maps.Map {
 	return map[string]interface{}{
 		"username": u.Username,
 		"name":     u.Name,
