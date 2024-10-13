@@ -66,7 +66,12 @@ func Router(r *gin.Engine) {
 				return
 			}
 
-			newUser, err := Create(user.Username, user.Name, user.Password, user.Email, user.Role)
+			err = surreal.Create[*model.User](surreal.CreatePayload{
+				Table:      "user",
+				Identifier: "",
+				Data:       user.ToMap(true),
+			}, &user)
+
 			if err != nil {
 				c.JSON(400, gin.H{
 					"error": err.Error(),
@@ -74,7 +79,7 @@ func Router(r *gin.Engine) {
 				return
 			}
 
-			c.JSON(200, newUser)
+			c.JSON(200, user.ToMap(false))
 		})
 		// Update user
 		usrRouter.PUT("/:id", func(c *gin.Context) {
@@ -88,7 +93,10 @@ func Router(r *gin.Engine) {
 				return
 			}
 
-			updatedUser, err := Update(id, user)
+			err = surreal.Update(surreal.UpdatePayload{
+				ID:   id,
+				Data: user.ToMap(false),
+			})
 			if err != nil {
 				c.JSON(400, gin.H{
 					"error": err.Error(),
@@ -96,12 +104,12 @@ func Router(r *gin.Engine) {
 				return
 			}
 
-			c.JSON(200, updatedUser)
+			c.JSON(200, user.ToMap(false))
 		})
 		// Delete user
 		usrRouter.DELETE("/:id", func(c *gin.Context) {
 			id := c.Param("id")
-			err := Delete(id)
+			err := surreal.Delete(id)
 			if err != nil {
 				c.JSON(400, gin.H{
 					"error": err.Error(),

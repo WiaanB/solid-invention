@@ -2,6 +2,7 @@ package model
 
 import (
 	"cinnanym/maps"
+	"fmt"
 	"github.com/surrealdb/surrealdb.go"
 )
 
@@ -18,11 +19,37 @@ func (u *User) IsAdmin() bool {
 	return u.Role == "admin"
 }
 
-func (u *User) ToMap() maps.Map {
-	return map[string]interface{}{
+func (u *User) ToMap(full bool) maps.Map {
+	user := map[string]interface{}{
 		"username": u.Username,
 		"name":     u.Name,
 		"email":    u.Email,
 		"role":     u.Role,
 	}
+
+	if full {
+		user["password"] = u.Password
+	}
+
+	return user
+}
+
+func (u *User) VerifyCreate() error {
+	if u.Username == "" {
+		return fmt.Errorf("missing field: username\n")
+	}
+
+	if u.Name == "" {
+		return fmt.Errorf("missing field: name\n")
+	}
+
+	if u.Password == "" {
+		return fmt.Errorf("missing field: password\n")
+	}
+
+	if u.Email == "" {
+		return fmt.Errorf("missing field: email\n")
+	}
+
+	return nil
 }

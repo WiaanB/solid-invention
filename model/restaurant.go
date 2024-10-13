@@ -2,6 +2,7 @@ package model
 
 import (
 	"cinnanym/maps"
+	"fmt"
 	"github.com/surrealdb/surrealdb.go"
 )
 
@@ -30,4 +31,28 @@ func (r *Restaurant) ToMap() maps.Map {
 		"type":    r.Type,
 		"rating":  r.Rating,
 	}
+}
+
+func (r *Restaurant) VerifyCreate() error {
+	if r.Name == "" {
+		return fmt.Errorf("missing field: name\n")
+	}
+
+	if r.Address == "" {
+		return fmt.Errorf("missing field: address\n")
+	}
+
+	if r.City == "" {
+		return fmt.Errorf("missing field: city\n")
+	}
+
+	if r.Country == "" {
+		return fmt.Errorf("missing field: country\n")
+	}
+
+	if r.Type == "" {
+		return fmt.Errorf("missing field: type\n")
+	}
+
+	return nil
 }

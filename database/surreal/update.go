@@ -2,6 +2,7 @@ package surreal
 
 import (
 	"cinnanym/maps"
+	"fmt"
 )
 
 type UpdatePayload struct {
@@ -10,6 +11,15 @@ type UpdatePayload struct {
 }
 
 func Update(payload UpdatePayload) error {
-	_, err := DB.Update(payload.ID, payload.Data)
+	entity, err := FindOne(payload.ID)
+	if err != nil {
+		return err
+	}
+
+	if entity == nil {
+		return fmt.Errorf("entity not found")
+	}
+
+	_, err = DB.Update(payload.ID, payload.Data)
 	return err
 }

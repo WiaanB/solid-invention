@@ -66,7 +66,12 @@ func Router(r *gin.Engine) {
 				return
 			}
 
-			newRestaurant, err := Create(restaurant)
+			err = surreal.Create[*model.Restaurant](surreal.CreatePayload{
+				Table:      "restaurant",
+				Identifier: "",
+				Data:       restaurant.ToMap(),
+			}, &restaurant)
+
 			if err != nil {
 				c.JSON(400, gin.H{
 					"error": err.Error(),
@@ -74,7 +79,7 @@ func Router(r *gin.Engine) {
 				return
 			}
 
-			c.JSON(200, newRestaurant)
+			c.JSON(200, restaurant)
 		})
 		// Update restaurant
 		restaurantRouter.PUT("/:id", func(c *gin.Context) {
@@ -88,7 +93,11 @@ func Router(r *gin.Engine) {
 				return
 			}
 
-			updatedRestaurant, err := Update(id, restaurant)
+			err = surreal.Update(surreal.UpdatePayload{
+				ID:   id,
+				Data: restaurant.ToMap(),
+			})
+
 			if err != nil {
 				c.JSON(400, gin.H{
 					"error": err.Error(),
@@ -96,12 +105,12 @@ func Router(r *gin.Engine) {
 				return
 			}
 
-			c.JSON(200, updatedRestaurant)
+			c.JSON(200, restaurant)
 		})
 		// Delete restaurant
 		restaurantRouter.DELETE("/:id", func(c *gin.Context) {
 			id := c.Param("id")
-			err := Delete(id)
+			err := surreal.Delete(id)
 			if err != nil {
 				c.JSON(400, gin.H{
 					"error": err.Error(),
